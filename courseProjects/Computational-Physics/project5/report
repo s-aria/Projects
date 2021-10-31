@@ -1,0 +1,118 @@
+C)We run the system for couple of crunch times and see how it evolves and
+make that into a short movie.
+The movie is for 200 particles for t'=3. We observe that the
+collapse happens at t'= 1 and by t'=1.5 the explosive expansion
+has been slowed down. By this point all the bound particles are 
+in state of equilibrium.
+
+D)
+We study a system of 10,50,100, 150 and 200 particles. We want to see
+how the size of the cluster relates to the varius quantities we measure.
+We set a condition for ejection which is all particles that venture outside
+of a sphere with radius 45 ly. We then count the particles within our sphere
+and see a near constant ratio of bound particles  versus ejected particles. 
+[Total: Ejected|200: 49|150:40|100: 24|50: 16|10: 4]
+We start with 40% ejection rate for 10 particles, then 32%, then 24%, then 26.6% and
+lastly 24.5%.
+With this we also measure the energy of the ejected particles versus the energy of the
+total system and observe:
+100.33% of the systems total energy for 200 particles
+100.9% of the systems total energy for 150 particles
+100.02% of the systems total energy for 100 particles
+119.28% of the systems total energy for 50 particles
+100.59% of the systems total energy for 10 particles
+Only the energies of 50 particle system stands out, with lower system energy than otherwise expected.
+However we observe the larger trend where we have a very large part of the systems energy in the 
+ejected particles.
+
+On the conservation of the energy in the system:
+The energy is not conserved, we start out with a negative total energy 
+due to the kinetic energy being zero. We end up with huge kinetic energy
+for the system once the particles start interacting and some of them are
+ejected. We plot the kinetic and potential energy and see that for
+some particles their kinetic energy is 100s of times larger than their
+potential energy. Due to the kinetic energy being proportional to
+v^2 we can easily see which particles are ejected by their kinetic energy.
+But this is not all, we also observe that for the ejected particles, their
+kinetic energy remains near constant, which tells us that it has escaped
+far enough to not be pulled in by the gravitational force which is proportional
+to 1/r^2. Which if we ignore the force between the ejected particles 
+is the radius to the center mass of the bound particles.
+
+We study the 200 particle simulation, here we observe that there are sharp increase
+in kinetic energy between t*=0.5 and 1.5. However most of these are exponentially 
+decreasing after their maxima. This, we hypothisize, is due to the density of particles
+in the area of the sphere this takes place. Our hypothesis is further strengthened by
+the decreasing likelihood of their appearence as time moves towards crunch time and beyond.
+We understand this is due to the large force that now acts on these over smaller distance
+it's more difficult to escape than when the particles were scattered uniformly in the sphere.
+As we reach equilibrium we see that these sharp increases have disappeared completely, and we
+conclude that it must be because of the mass concentrated in the center of the cluster and the 
+total force that acts on particles so close to the center of the cluster.
+
+
+
+For 200 particles:
+49 out particles are ejected out of 45 ly radius. Their energies are: 
+(59034500-(-195315))/59034500=100.33% of the systems total energy.
+
+for 150 particles:
+40 out particles are ejected out of 45 ly radius. Their energies are: 
+(1.80142E7-(-162929))/1.80142E7=100.9% of the systems total energy.
+
+for 100 particles:
+24 out particles are ejected out of 45 ly radius. Their energies are: 
+(6.01792E8-(-109020))/6.01792E8=100.02% of the systems total energy.
+
+
+for 50 particles:
+16 out particles are ejected out of 45 ly radius. Their energies are: 
+(206040-(-39725.8))/206040=119.28% of the systems total energy.
+
+
+for 10 particles:
+4 out particles are ejected out of 45 ly radius. Their energies are: 
+(40311.6-(-237.617))/40311.6=100.59% of the systems total energy.
+--------------------
+E)
+We want to add a term to our equation for the force so we avoid particles
+almost being on top of eachother and thus creating the problem of 
+particles escaping with huge velocities. It also makes particles lump together
+as they can't shoot past eachother when they are very close.
+
+Adding this term epsilon to the denominator has done wonders for our algorithm.
+We no longer observe particles that have escaped with such velocities
+that the potential and kinetic energies of bound particles look
+like constants. We observe a sharp decrease in the number of particles that
+have been ejected, at 200 it has gone from 24.5% to 4%. The biggest change being
+50 particle system where we previously had 32% we now have 0% ejected particles.
+
+We look at the energies and following the trend we described above, it's only
+expected that the energies of the ejected particles also decrease sharply.
+
+We measure the energy of the ejected particles versus the energy of the
+total system and observe:
+6.7% of the systems total energy for 200 particles 
+7.22% of the systems total energy for 150 particles
+3.51% of the systems total energy for 100 particles
+0% of the systems total energy for 50 particles
+
+For 200 particles:
+8 out particles are ejected out of 45 ly radius. Their energies are: 
+(-526722+562032)/526722=6.7% of the systems total energy.
+
+for 150 particles:
+6 out particles are ejected out of 45 ly radius. Their energies are: 
+(-395889+424488)/395889=7.22% of the systems total energy.
+
+for 100 particles:
+2 out particles are ejected out of 45 ly radius. Their energies are: 
+(-260865+270044)/260865=3.51% of the systems total energy.
+
+
+for 50 particles:
+0 out particles are ejected out of 45 ly radius. Their energies are: 
+0% of the systems total energy.
+--------------------------
+f)
+We will now adjust

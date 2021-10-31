@@ -1,0 +1,175 @@
+from numpy import *
+from scitools.std import*
+from sys import argv
+from os import system
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+###############run if start = 1 and animate = 1 and for the static graph static=1
+start = 1
+#Animator
+animate = 1
+save = 1
+#####normal
+static = 0
+#for either 2d or 3d set them equal to 1
+d2 = 1 #energy calculations and plotter
+d3 = 0 #3d trajectory plotter
+
+############### constants etc.
+name="100 Stars"
+N = 100 #par
+nmoves = 100 #moves
+dim = 3 #dimensjoner
+time = 3
+dt = 1E-3
+col = 6 #3 for position and 3 for velocity
+datam = loadtxt('DATA')
+mass = loadtxt('mass')
+
+if animate:
+	part=[]
+
+	for i in range(col,col*len(datam[0,:])+1,col):
+		ap=datam[:,i-col:i-3]
+		part.append(ap)
+
+	part=array(part)
+
+
+	positions = part
+
+
+if start and animate:
+
+    system("mkdir /home/Ace/Documents/Computational-Physics/P5/images") # tmp folder for movie frames
+    plt.ion()
+    fig = plt.figure()
+    fig.suptitle(name.split("__")[0] + r", t' = %g , dt' = %g " % (time, dt))
+    ax3D = fig.add_subplot(111, projection='3d')
+
+    ax3D.set_xlabel('x [ly]')
+    ax3D.set_ylabel('y [ly]')
+    ax3D.set_zlabel('z [ly]')
+
+    dots = []
+    for i in range(N):
+        # Need to fill dots with something:
+        dots.append(ax3D.plot([0], [0], [0],'*')[0])
+        # Last index [0] because plot returns tuple with one element
+
+    R0 = 20.0#max(positions[:,0,:]) * 1.05
+
+    for j in range(0, nmoves):
+        # TOD This moves around for some reason:
+        #ax3D.set_title('$t = %g$' % (dt * j))
+        for i in range(N):
+
+            """
+            Necessity two have two lines because there is no set_data for
+            3 dim data in matplotlib.
+
+            http://matplotlib.org/examples/animation/simple_3danim.html
+            """
+            dots[i].set_data([positions[i,j,0]],[positions[i,j,1]])
+            dots[i].set_3d_properties([positions[i,j,2]])
+
+        ax3D.set_xlim([-R0, R0])
+        ax3D.set_ylim([-R0, R0])
+        ax3D.set_zlim([-R0, R0])
+
+        
+        if save:
+            plt.savefig("/home/Ace/Documents/Computational-Physics/P5/images/img%04d.png" % j)
+
+        #plt.draw()
+    plt.ioff()
+    system("ffmpeg -f image2 -r 15 -i images/img%04d.png -r 30 -pix_fmt yuv420p -y mov.mp4")
+    #system(rmdir images)
+    #plt.show()
+parcount = 0
+radi=[]
+#######This loop *does* take a file that includes velocities (needed for kinetic energy)
+if start and static:
+	fig = plt.figure()
+	if d3:
+		ax = fig.gca(projection='3d')
+
+	#Data set with given velocity values
+	dat1 = datam
+	R_0=20.0
+	R_max= 40 #all stars that escape the sphere with this radius will not have their energies calculated
+	N=100    #100 stars
+	time = 1.5
+	M=int(time/dt)	
+	t=linspace(0,time,M)
+	vol=(4*pi*R_0**3)/3.0
+	rho=sum(mass)/vol
+	G=3*pi/(32*rho)
+	totK=0
+	totU=0
+	for i in range(col,col*N+1,col): #Change col=3 if data does *not* include velocity
+		k1=i-col
+		m1=mass[k1/col]
+		par1=dat1[:,k1:i]	
+		x=par1[:,0]; y=par1[:,1];z=par1[:,2]
+		if d2:
+			vx=par1[:,3]; vy=par1[:,4];vz=par1[:,5]
+			v=sqrt(vx**2+vy**2+vz**2)
+			K=zeros(M)
+			U=zeros(M)
+		plot = 0 #will not be plotted if star is beyond max radius
+		rr = sqrt(x**2+y**2+z**2)	
+		r_max = max(rr)
+		radi.append(rr[int(length(rr)*2./3)])
+		#Do *not* plot stars that have escaped too far
+		if r_max<R_max:
+			plot = 1
+			parcount = parcount + 1
+
+		for j in range(col,col*N+1,col):
+			if i != j and d2:
+						     
+				l1=j-col
+				
+				m2=mass[l1/col]
+				par2=dat1[:,l1:j]
+				
+				x1=par2[:,0]; y1=par2[:,1]; z1=par2[:,2]
+				xdiff=x-x1; ydiff=y-y1; zdiff=z-z1
+				r=sqrt(xdiff**2+ydiff**2+zdiff**2)
+
+				if r_max<R_max: #Do *not include stars that have escaped too far in plot, 
+						#interaction still computed
+					u=(-G*m1*m2/r)/2.0
+					U=U+u
+					K = 0.5*m1*v**2
+					plot = 1
+		if d2:
+
+			if max(abs(U))<35500 and plot:
+				totK = totK + sum(K)/float(len(K))
+				totU = totU + sum(U)/float(len(U))
+			if max(abs(U))>35500 and plot:
+				parcount= parcount - 1
+				plot=0
+		#	if max(abs(K))>35000 or abs(max(U))>35000 and r_max<R_max:
+		#		
+		#		print parcount
+		#		
+				#print "what"
+				
+		if d3 and plot:#For the 3d trajectory you don't need to calculate energy
+			ax.plot(x, y, z)
+			plt.hold('on')
+		if d2 and plot:
+			plt.plot(t,K,'b',t,U,'r')
+			plt.hold('on')
+	radi=array(radi)
+	radi.shape=(len(radi),1)
+	savetxt('radi', radi, fmt='%1.4e') 
+	plt.title('Figure for %g stars within R=%d l.y after t*=%2g'  % (parcount,R_max,time))
+	if d2: 
+		vir =float(totU/totK)
+		print "ratio of U/K %4g and %2g stars according to the virial th. it should be -2" % (vir,parcount)
+	plt.show()

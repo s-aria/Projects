@@ -1,0 +1,15 @@
+#Latex files
+*.aux
+*.log
+*.tex
+
+#other files
+*.png
+*.pyc
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out

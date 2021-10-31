@@ -1,0 +1,54 @@
+\documentclass{article}
+ 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage[utf8]{inputenc}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+%\verbatiminput{verb.txt}
+\begin{document}
+\title{INF5620 EXAM}
+\author{Shafa Aria}
+\maketitle
+\section{PROBLEM 2: 1D finite element for approximation}
+\subsection{a}
+We want to approximate $f(x) = x(1-x)$ on the domain $\Omega = [0,1]$
+In general we have:
+$$\tilde A_{r,s}^{(e)} = \int_{-1}^{1} \varphi_r(X) \varphi_s(X)\frac{h}{2}\mathrm{d}X$$
+$$\tilde b_{r}^{(e)} = \int_{-1}^{1} f(x(X))\varphi_r(X)\frac{h}{2}\mathrm{d}X$$
+These are general, and for P1 elements we have:
+$$\tilde \varphi_0(X) = \frac{1}{2}(1-X)$$
+$$\tilde \varphi_1(X) = \frac{1}{2}(1+X)$$
+Inserting above in the integrals and solving for our function gives us:
+$$\tilde A_{0,0}^{(e)} = \frac{h}{8} \int_{-1}^{1} (1-X)^2\mathrm{d}X = \frac{h}{3}$$
+$$\tilde A_{1,0}^{(e)} = \frac{h}{8} \int_{-1}^{1} (1-X^2)\mathrm{d}X = \frac{h}{6}$$
+$$\tilde A_{0,1}^{(e)} = \tilde A_{1,0}^{(e)} $$
+$$\tilde A_{1,1}^{(e)} = \frac{h}{8} \int_{-1}^{1} (1+X)^2\mathrm{d}X = \frac{h}{3}$$
+And the $\tilde b_{r}^{(e)}$ gives us:
+\begin{align*} 
+\tilde b_{0}^{(e)} = &\int_{-1}^{1} (x_m +\frac{1}{2}hX)(1 - (x_m +\frac{1}{2}hX))\frac{1}{2}(1-X)\frac{h}{2}\mathrm{d}X\\
+=& - \frac{h^{3}}{24} + \frac{h^{2} x_{m}}{6} - \frac{h^{2}}{12} - \frac{h x_{m}^{2}}{2} + \frac{h x_{m}}{2}\\
+\tilde b_{1}^{(e)} = &\int_{-1}^{1} (x_m +\frac{1}{2}hX)(1 - (x_m +\frac{1}{2}hX))\frac{1}{2}(1+X)\frac{h}{2}\mathrm{d}X\\
+=& - \frac{h^{3}}{24} - \frac{h^{2} x_{m}}{6} + \frac{h^{2}}{12} - \frac{h x_{m}^{2}}{2} + \frac{h x_{m}}{2}
+\end{align*}
+Using \texttt{sympy} we get the following:
+
+$$A = \left[\begin{matrix}\frac{h}{3} & \frac{h}{6}\\\frac{h}{6} & \frac{h}{3}\end{matrix}\right]$$
+$$b = \left[\begin{matrix}- \frac{h^{3}}{12} + \frac{h^{2}}{6}\\- \frac{h^{3}}{4} + \frac{h^{2}}{3}\end{matrix}\right]$$
+$$c = \left[\begin{matrix}\frac{h^{2}}{6}\\\frac{1}{h} \left(- \frac{5 h^{3}}{6} + h^{2}\right)\end{matrix}\right]
+$$
+For the P2 element we have:
+$$\tilde \varphi_0(X) = \frac{1}{2}(X-1)X$$
+$$\tilde \varphi_1(X) = 1+X^2$$
+$$\tilde \varphi_2(X) = \frac{1}{2}(X+1)X$$
+
+
+
+
+
+
+
+\end{document}

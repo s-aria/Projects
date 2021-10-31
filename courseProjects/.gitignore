@@ -1,0 +1,28 @@
+FYS4180/
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+
+## [Python] Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# [C++] Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+## misc
+*.xyz
